@@ -87,7 +87,13 @@
     </section>
   </main>
 
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "6bed9eee467b44749e353f8bbd50ee99"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
   <script>
     window.onerror = function(msg, src, lineno, colno, err) {
       console.log("Global Error Trigger");
@@ -99,8 +105,14 @@
         line: lineno, 
         column: colno
       };
-      
 
+      fetch("/log-error", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(errData)
+      }); 
 
       return true;
     }
