@@ -88,14 +88,44 @@
   </main>
 
   <script>
+    class CalcError extends Error {
+      constructor(msg) {
+        super(msg);
+        this.name = "Calc Error";
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
       let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+
+        if (firstNum == "" || secondNum == "") {
+          throw new CalcError("Blank input");
+        }
+        if (isNaN(firstNum) || isNaN(secondNum)) {
+          throw new CalcError("Not valid numbers");
+        }
+        if (operator == "/" && Number(secondNum) == 0) {
+          throw new CalcError("Divide by zero error");
+        }
+
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (error) {
+        if (error instanceof CalcError) {
+          console.warn(error.message);
+          output.textContent = error.message
+        } else {
+          console.error(error);
+          output.textContent = error.message;
+        }
+      } finally {
+        console.log("Calculation done");
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
@@ -104,6 +134,7 @@
     // You may move this JS to another file if you wish
     errorBtns.forEach(button => {
       button.addEventListener('click', event => {
+        e.preventDefault();
         switch (button.textContent) {
           case "Console Log":
             console.log('Console Log Demo');
