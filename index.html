@@ -88,6 +88,12 @@
   </main>
 
   <script>
+    window.onerror = function(msg, src, lineno, colno, err) {
+      console.log("Global Error Trigger");
+      console.log(msg);
+      return true;
+    }
+    
     class CalcError extends Error {
       constructor(msg) {
         super(msg);
@@ -182,6 +188,9 @@
             break;
           case "Console Trace":
             console.trace("Trace Demo");
+            break;
+          case "Trigger a Global Error":
+            variable.yes();
             break;
         }
       });
