@@ -87,10 +87,27 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "6bed9eee467b44749e353f8bbd50ee99"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
   <script>
     window.onerror = function(msg, src, lineno, colno, err) {
       console.log("Global Error Trigger");
       console.log(msg);
+
+      const errData = {
+        msg, 
+        src, 
+        line: lineno, 
+        column: colno
+      };
+      
+
+
       return true;
     }
     
@@ -140,7 +157,7 @@
     // You may move this JS to another file if you wish
     errorBtns.forEach(button => {
       button.addEventListener('click', event => {
-        e.preventDefault();
+        event.preventDefault();
         switch (button.textContent) {
           case "Console Log":
             console.log('Console Log Demo');
