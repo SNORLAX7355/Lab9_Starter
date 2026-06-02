@@ -99,21 +99,6 @@
       console.log("Global Error Trigger");
       console.log(msg);
 
-      const errData = {
-        msg, 
-        src, 
-        line: lineno, 
-        column: colno
-      };
-
-      fetch("/log-error", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(errData)
-      }); 
-
       return true;
     }
     
@@ -213,7 +198,9 @@
             console.trace("Trace Demo");
             break;
           case "Trigger a Global Error":
-            variable.yes();
+            setTimeout(() => {
+              variable.yes();
+        }, 0);
             break;
         }
       });
